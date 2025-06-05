@@ -5,6 +5,10 @@ from circleshape import CircleShape
 class Player(CircleShape):
     def __init__(self, x, y):
         super().__init__(x, y, PLAYER_RADIUS)
+        pygame.sprite.Sprite.__init__(self)  # Required for sprite group functionality
+        if hasattr(Player, 'containers'):
+            for group in Player.containers:
+                group.add(self)
         self.rotation = 0
     
     def triangle(self):

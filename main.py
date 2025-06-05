@@ -11,6 +11,13 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
+    #creating groups
+    updatables = pygame.sprite.Group()
+    drawables = pygame.sprite.Group()
+
+    #set containers
+    Player.containers = (updatables, drawables)
+    
     #time for fps
     clock = pygame.time.Clock()
     dt = 0
@@ -24,12 +31,13 @@ def main():
             if event.type == pygame.QUIT:
                return
 
-        #update player
-        player.update(dt)
+        #update all updatable objects
+        updatables.update(dt)
         #clear screen
         screen.fill((0, 0, 0))  
-        #draw the player
-        player.draw(screen)
+        #draw all drawable objects
+        for drawable in drawables:
+            drawable.draw(screen)
         #flip the display
         pygame.display.flip()
 
