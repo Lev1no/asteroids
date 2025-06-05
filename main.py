@@ -1,48 +1,53 @@
 import pygame
 from constants import *
 from player import Player
+from asteroidfield import AsteroidField
 
 def main():
     print("Starting Asteroids!")
     print(f"Screen width: {SCREEN_WIDTH}")
     print(f"Screen height: {SCREEN_HEIGHT}")
 
-    #game init
+    # Game init
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-    #creating groups
+    # Create groups
     updatables = pygame.sprite.Group()
     drawables = pygame.sprite.Group()
+    asteroids = pygame.sprite.Group()
 
-    #set containers
+    # Set containers before creating objects
     Player.containers = (updatables, drawables)
-    
-    #time for fps
+    from asteroid import Asteroid
+    Asteroid.containers = (asteroids, updatables, drawables)
+    AsteroidField.containers = (updatables,)
+
+    # Create objects
+    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    field = AsteroidField()
+
+    # Time for fps
     clock = pygame.time.Clock()
     dt = 0
-
-    #instantiate the player
-    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
     running = True
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-               return
+                return
 
-        #update all updatable objects
+        # Update everything
         updatables.update(dt)
-        #clear screen
-        screen.fill((0, 0, 0))  
-        #draw all drawable objects
+
+        # Draw everything
+        screen.fill((0, 0, 0))
         for drawable in drawables:
             drawable.draw(screen)
-        #flip the display
         pygame.display.flip()
 
-        #tick the clock to maintain 60fps and get delta time
-        dt = clock.tick(60) / 1000 #convert ms to s
+        # Maintain 60 FPS
+        dt = clock.tick(60) / 1000
 
 if __name__ == "__main__":
-    main()     
+    main()
