@@ -24,6 +24,8 @@ def main():
             if event.type == pygame.QUIT:
                return
 
+        #update player
+        player.update(dt)
         #clear screen
         screen.fill((0, 0, 0))  
         #draw the player
